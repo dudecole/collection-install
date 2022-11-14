@@ -1,2 +1,5 @@
 collections:
-- darren_dudeman.test
+- name: darren_dudeman.test
+  version: 1.0.0
+  source: https://192.168.59.50/api/galaxy/content/published/
+
