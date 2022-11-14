@@ -1,0 +1,42 @@
+#-------
+# servicenow.itsm collection
+#------
+# - When in the `approval` state, was getting a 403 message 
+#   due to no permissions on being able to approve a ticket 
+#   as the user 'admin' i guess..  Could also be nice to have
+#   real humans approve the change request rather than 
+#   an automation approving it..??  Will
+#   need to look into all that.
+#
+---
+- hosts: localhost
+  connection: local
+
+  collections: 
+  - servicenow.itsm
+
+  vars:
+    snow_username: "admin" #"{{ sn_username }}"
+    snow_password: "$wuW9$DlTm3T" #"{{ sn_password }}"  
+    snow_host: "https://dev86159.service-now.com/"  #"{{ sn_host }}" 
+    snow_change_number: "CHG0030006" #"{{ change_number }}" 
+    snow_assignment_group: "Change Management"
+    snow_state: "" # [ new, assess, authorize, scheduled, implement, review, closed, canceled ]
+    snow_timeout: 30 # seconds 
+    close_code: "" #[ successful, unsuccessful, 'successful with issues' ]
+    close_notes: ""
+
+  tasks:
+  - name: query a sn change ticket
+    servicenow.itsm.change_request:
+      state: "{{ snow_state | default(omit) }}" 
+      assignment_group: "{{ snow_assignment_group }}" #required when first starting the ticket, assess..?
+      instance: 
+        host: "{{ snow_host }}"
+        username: "{{ snow_username }}"
+        password: "{{ snow_password }}"
+        timeout: "{{ snow_timeout }}"
+      number: "{{ snow_change_number }}"
+      close_code: "{{ close_code | default(omit) }}" #these are required when closing a ticket
+      close_notes: "{{ close_notes | default(omit) }}" #these are required when closing a ticket
+    register: ticket_query_results

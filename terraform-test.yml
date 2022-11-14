@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+  
+  collections:
+  - community.general
+  
+  tasks:
+  - name: test out the terraform module
+    community.general.terraform:
+      project: "{{ project_dir }}"
+      state: present
+    register: terraform_results
+

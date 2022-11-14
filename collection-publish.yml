@@ -1,0 +1,44 @@
+# ------------
+# for documentation, look at 
+#
+# $ `ansible-doc redhat_cop.ah_configuration.ah_collection`
+# ------------
+# I didn't try these as auth methods yet      
+# ah_username: "{{ ah_username }}" #"ah_username" # "{{ ah_token }}"
+# ah_password: "{{ ah_password }}"  # "{{ ah_token }}"
+
+---
+- hosts: localhost
+  connection: local
+  collections:
+  - redhat_cop.ah_configuration
+
+  vars:
+#    ah_username: ''
+#    ah_password: ''
+    ah_host: '192.168.59.50'
+    ah_validate_certs: false
+    ah_api_token: 'a8efb2bd8a64d8b694c6e63eccfa5f39028b5520'
+    collection_version: '1.0.0'
+    collection_approval: true
+    collection_namespace: "darren_dudeman"
+    collection_name: "test"
+    collection_state: "absent" #"present" #"absent"
+    collection_tar_path: './darren_dudeman-test-1.0.0.tar.gz'
+
+  tasks:
+  - name: "{{ collection_state }} a collection"
+    redhat_cop.ah_configuration.ah_collection:
+      ah_host: "{{ ah_host }}"
+      ah_token: "{{ ah_api_token }}" 
+      auto_approve: "{{ collection_approval }}"
+      name: "{{ collection_name }}"
+      namespace: "{{ collection_namespace }}" 
+      path: "{{ collection_tar_path }}" 
+      state: "{{ collection_state }}" 
+      validate_certs: "{{ ah_validate_certs }}"
+      version: "{{ collection_version }}"
+
+  - name: take a break..  ;)
+    pause: 
+      seconds: 5
