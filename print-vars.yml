@@ -3,17 +3,23 @@
   connection: local
   gather_facts: true
  
-  collections:
-    darren_dudeman.test
+  #  collections:
+  #    darren_dudeman.test
 
-  vars:
-    ANSIBLE_GALAXY_SERVER_MYSTUFF_TOKEN: 79619dab8f4e9b9578d47a5636b1e136bd7963e7
-    ANSIBLE_GALAXY_SERVER_MYSTUFF_URL: https://192.168.59.50/api/galaxy/content/published/
+  #  vars:
+  #    ANSIBLE_GALAXY_SERVER_MYSTUFF_TOKEN: 79619dab8f4e9b9578d47a5636b1e136bd7963e7
+  #    ANSIBLE_GALAXY_SERVER_MYSTUFF_URL: https://192.168.59.50/api/galaxy/content/published/
 
   tasks:
+  - name: list all the collections installed
+    shell: ansible-galaxy collection list
+    register: galaxy_return
+
+
   - name: debug all facts to see if galaxy is available
     debug:
       msg:
+        - "{{ galaxy_return }}"
         - "{{ ANSIBLE_GALAXY_SERVER_MYSTUFF_TOKEN }}" 
         - "{{ ANSIBLE_GALAXY_SERVER_MYSTUFF_URL }}" 
 
